@@ -1,31 +1,12 @@
 #include <iostream>
-#include <math.h>
-#include <vector>
 #include <iomanip>
+#include <math.h>
 
-double int_right(double f(double), double a, double b, double h);
+#include "int_functions.h"
+
+double int_right_parallel(double f(double), double a, double b, double h, int thread_count);
 double int_right(double f(double), double a, double b, double h, double sum);
 double diff_right(double f(double), double x0, double h);
-
-double f(double x)
-{
-    return (2*x + 3)*pow(4, 2*x);
-}
-
-double f_prime(double x)
-{
-    return 2*pow(4, 2*x)*(1+log(4)*(2*x+3));
-}
-
-double sum_interval(double start, double end, double step)
-{
-    double sum = 0;
-    for(int i = 0; i <= std::round((end-start)/step); i++)
-    {
-        sum += f(start + i*step);
-    }
-    return sum;
-}
 
 void print_results(size_t count, std::vector<double>& h, std::vector<double>& vals, double precise_val)
 {
@@ -41,23 +22,12 @@ void print_results(size_t count, std::vector<double>& h, std::vector<double>& va
 int main()
 {
     //Integration
-    /*
-    Integration. Precise value: 23.8693127
-             h              val        delta
-           0.1    27.9218971553     4.053e+00
-     1.000e-02    24.2563417431     3.870e-01
-     1.000e-03    23.9078329885     3.852e-02
-     1.000e-04    23.8731629006     3.850e-03
-     1.000e-05    23.8688976998     4.150e-04
-     1.000e-06    23.8693511977     3.850e-05
-     1.000e-07    23.8693165477     3.848e-06
-     1.000e-08    23.8693130827     3.827e-07
-     */
-    const double J = 23.8693127;
+    const double J = 77/(2*log(4)) - 15/(2*pow(log(4), 2));
     const double K = 15;
-    const double I_K = 8;
+    const double I_K = 10;
     const double a = 0;
     const double b = 1;
+    const int THREAD_COUNT = 1000;
 
     std::vector<double> h(K);
 
@@ -71,7 +41,7 @@ int main()
     for(int i = 0; i < I_K; i++)
     {
         std::cout << "h=" << h[i] << std::endl;
-        Ik[i] = int_right(f, a, b, h[i]);
+        Ik[i] = int_right_parallel(f, a, b, h[i], THREAD_COUNT);
     }
 
     std::cout << "--------------------------------------\n";
@@ -103,9 +73,9 @@ int main()
     return 0;
 }
 
-double int_right(double f(double), double a, double b, double h)
+double int_right_parallel(double f(double), double a, double b, double h, int thread_count)
 {
-    double sum = sum_interval(a, b, h);
+    double sum = sum_interval_parallel(a, b, h, thread_count);
     
     return int_right(f, a, b, h, sum);
 }
