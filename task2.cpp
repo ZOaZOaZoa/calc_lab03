@@ -6,6 +6,11 @@
 
 #include "int_functions.h"
 
+double f(double x)
+{
+    return (2*x + 3)*pow(4, 2*x);
+}
+
 void print_results(size_t count, std::vector<double>& h, std::vector<double>& vals, double precise_val)
 {
     std::cout << std::setw(14) << "h" << std::setw(17) << "val" << std::setw(14) << "delta\n";
@@ -40,6 +45,7 @@ void print_elapsed_time(std::chrono::steady_clock::time_point start, std::chrono
     std::cout << "Elapsed time: " << std::fixed 
             << std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count() << "ms." << std::endl;
 }
+
 
 int main()
 {
@@ -116,7 +122,7 @@ int main()
     {
         h[it] = h[it-1]/2;
         I[it] = simpson_parallel(f, a, b, h[it], THREAD_COUNT);
-        rung[it] = (I[it-1]-I[it])/(pow(2, P) - 1);
+        rung[it] = (I[it]-I[it-1])/(pow(2, P) - 1);
     } while (it < MAX_ITER & fabs(rung[it++]) > EPS);
 
     end = std::chrono::steady_clock::now();
