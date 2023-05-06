@@ -10,12 +10,19 @@ double f(double x)
     return sqrt(sin(x)/(pow(cos(x), 9)));
 }
 
+const double precise_val = 2*pow(tan(1), 3.5)/7 + 2*pow(tan(1), 1.5)/3;
+double error(double result)
+{
+    return fabs(precise_val - result);
+}
+
 void print_results(size_t count, std::vector<int>& M, std::vector<double>& vals, std::vector<int>& times)
 {
-    std::cout << std::setw(5) << "M" << std::setw(17) << "val" << std::setw(20) << "Time elapsed, ms\n";
+    std::cout << std::setw(5) << "M" << std::setw(17) << "val" << std::setw(20) << "Absolute error" << std::setw(20) << "Time elapsed, ms\n";
     for(int i = 0; i < count; i++)
     {
         std::cout << std::setw(5) << M[i] << std::setw(17) <<  std::fixed << std::setprecision(13) << vals[i] 
+            << std::setw(20) << std::setprecision(2) << std::scientific << error(vals[i])
             << std::setw(20) << std::setprecision(5) << times[i] << std::endl;
     }
 }
@@ -23,7 +30,7 @@ void print_results(size_t count, std::vector<int>& M, std::vector<double>& vals,
 int main()
 {
     const double a = 0;
-    const double b = 0.5;
+    const double b = 1;
     const double EPS = 3e-11;
     const int THREAD_COUNT = 30;
 
