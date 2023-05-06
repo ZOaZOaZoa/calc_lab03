@@ -25,10 +25,10 @@ int main()
     const double a = 0;
     const double b = 0.5;
     const double EPS = 3e-11;
-    const int THREAD_COUNT = 8;
-    const int M_count = 5;
+    const int THREAD_COUNT = 30;
 
-    std::vector<int> M = {2, 4, 5, 7, 8};
+    std::vector<int> M = {2, 3, 4, 5, 6, 7, 8};
+    int M_count = M.size();
     std::vector<int> calc_times(10);
 
     std::vector<double> I_values(10);

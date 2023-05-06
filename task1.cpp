@@ -33,10 +33,10 @@ int main()
     //Integration
     const double J = 77/(2*log(4)) - 15/(2*pow(log(4), 2));
     const double K = 15;
-    const double I_K = 9;
+    const double I_K = 10;
     const double a = 0;
     const double b = 1;
-    const int THREAD_COUNT = 1000;
+    const int THREAD_COUNT = 96;
 
     std::vector<double> h(K);
 

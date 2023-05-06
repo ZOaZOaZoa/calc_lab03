@@ -52,7 +52,7 @@ int main()
     double EPS = 3e-11;
     const double J = 77/(2*log(4)) - 15/(2*pow(log(4), 2));
     const double K = 15;
-    const double I_K = 8;
+    const double I_K = 10;
     const double a = 0;
     const double b = 1;
     const int THREAD_COUNT = 96;
@@ -64,7 +64,7 @@ int main()
         h[i-1] = (b-a)/pow(10, i);
     }
 
-    /*//Testing speed of algorithm on different values of thread_count
+    /*//Testing speed of algorithm on different values of THREAD_COUNT
     for(int thread_count = 50; thread_count < 1001; thread_count++)
     {
         auto start = std::chrono::steady_clock::now();
