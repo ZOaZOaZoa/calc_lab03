@@ -33,7 +33,7 @@ double simpson_parallel(double f(double), double a, double b, double h, int thre
     return h/6*(f(a) + 4*sum_halfX + 2*sum_x + f(b));
 }
 
-double simpson_parallel_runge(double f(double), double a, double b, double eps, int thread_count)
+double simpson_parallel_runge(double f(double), double a, double b, double eps, int thread_count, double& h_min)
 {
     const int p = 4;
     const int MAX_ITER = 25;
@@ -55,6 +55,8 @@ double simpson_parallel_runge(double f(double), double a, double b, double eps, 
     {
         I_h += rung;
     }
+
+    h_min = h;
 
     return I_h;
 }
