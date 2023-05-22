@@ -35,7 +35,7 @@ int main()
     const double EPS = 3e-11;
     const int THREAD_COUNT = 30;
 
-    std::vector<int> M = {2, 3, 4, 5, 6, 7, 8};
+    std::vector<int> M = {2, 4, 5, 7, 8, 9};
     int M_count = M.size();
     std::vector<int> calc_times(10);
 

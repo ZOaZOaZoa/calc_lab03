@@ -77,8 +77,6 @@ int main()
     
     print_results(D_K, h, d_vals, D_precise);
 
-    //Оценить размер шага при котором начинает расти погрешность
-
     return 0;
 }
 
