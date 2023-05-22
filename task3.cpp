@@ -33,9 +33,9 @@ int main()
     const double a = 0;
     const double b = 1;
     const double EPS = 3e-11;
-    const int THREAD_COUNT = 30;
+    const int THREAD_COUNT = 1;
 
-    std::vector<int> M = {2, 4, 5, 7, 8, 9};
+    std::vector<int> M = {2, 3, 4, 5, 6, 7, 8, 9};
     int M_count = M.size();
     std::vector<int> calc_times(10);
 

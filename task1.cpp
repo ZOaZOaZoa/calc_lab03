@@ -4,7 +4,7 @@
 
 #include "int_functions.h"
 
-double int_right_parallel(double f(double), double a, double b, double h, int thread_count);
+double int_right_parallel(double f(double), double a, double b, size_t steps, int thread_count);
 double int_right(double f(double), double a, double b, double h, double sum);
 double diff_right(double f(double), double x0, double h);
 
@@ -33,16 +33,18 @@ int main()
     //Integration
     const double J = 77/(2*log(4)) - 15/(2*pow(log(4), 2));
     const double K = 15;
-    const double I_K = 10;
+    const double I_K = 8;
     const double a = 0;
     const double b = 1;
     const int THREAD_COUNT = 96;
 
     std::vector<double> h(K);
+    std::vector<double> steps(K);
 
     for(int i = 1; i <=K; i++)
     {
         h[i-1] = (b-a)/pow(10, i);
+        steps[i-1] = pow(10, i);
     }
 
     std::vector<double> Ik(I_K);
@@ -50,7 +52,7 @@ int main()
     for(int i = 0; i < I_K; i++)
     {
         std::cout << "h=" << h[i] << std::endl;
-        Ik[i] = int_right_parallel(f, a, b, h[i], THREAD_COUNT);
+        Ik[i] = int_right_parallel(f, a, b, steps[i], THREAD_COUNT);
     }
 
     std::cout << "--------------------------------------\n";
@@ -80,9 +82,10 @@ int main()
     return 0;
 }
 
-double int_right_parallel(double f(double), double a, double b, double h, int thread_count)
+double int_right_parallel(double f(double), double a, double b, size_t steps, int thread_count)
 {
-    double sum = sum_interval_parallel(f, a, b, h, thread_count);
+    double sum = sum_interval_parallel(f, a, b, steps, thread_count);
+    double h = (b-a)/steps;
     
     return int_right(f, a, b, h, sum);
 }

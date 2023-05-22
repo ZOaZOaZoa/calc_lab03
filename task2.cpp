@@ -52,16 +52,18 @@ int main()
     double EPS = 3e-11;
     const double J = 77/(2*log(4)) - 15/(2*pow(log(4), 2));
     const double K = 15;
-    const double I_K = 10;
+    const double I_K = 8;
     const double a = 0;
     const double b = 1;
     const int THREAD_COUNT = 96;
 
     std::vector<double> h(K);
+    std::vector<double> steps(K);
 
     for(int i = 1; i <=K; i++)
     {
         h[i-1] = (b-a)/pow(10, i);
+        steps[i-1] = pow(10, i);
     }
 
     /*//Testing speed of algorithm on different values of THREAD_COUNT
@@ -89,8 +91,8 @@ int main()
     //f defined in int_functions.cpp
     for(int i = 0; i < I_K; i++)
     {
-        std::cout << "h=" << h[i] << std::endl;
-        Ik[i] = simpson_parallel(f, a, b, h[i], THREAD_COUNT);
+         std::cout << "h=" << h[i] << std::endl;
+        Ik[i] = simpson_parallel(f, a, b, steps[i], THREAD_COUNT);
     }
     auto end = std::chrono::steady_clock::now();
 
@@ -111,9 +113,11 @@ int main()
     start = std::chrono::steady_clock::now();
 
     h = std::vector<double>(MAX_ITER);
+    steps = std::vector<double>(MAX_ITER);
     h[0] = 0.1;
+    steps[0] = 10;
     std::vector<double> I(MAX_ITER);
-    I[0] = simpson_parallel(f, a, b, h[0], THREAD_COUNT);
+    I[0] = simpson_parallel(f, a, b, steps[0], THREAD_COUNT);
     std::vector<double> rung(MAX_ITER);
     rung[0] = 0;
     size_t it = 1;
@@ -121,7 +125,8 @@ int main()
     do
     {
         h[it] = h[it-1]/2;
-        I[it] = simpson_parallel(f, a, b, h[it], THREAD_COUNT);
+        steps[it] = steps[it-1]*2;
+        I[it] = simpson_parallel(f, a, b, steps[it], THREAD_COUNT);
         rung[it] = (I[it]-I[it-1])/(pow(2, P) - 1);
     } while (it < MAX_ITER & fabs(rung[it++]) > EPS);
 
